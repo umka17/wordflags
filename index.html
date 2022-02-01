@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .country-name{
+
+        }
+        .country-flag{
+            width: 50px;
+            height: 50px;
+        }
+        .list-group{
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<h1 class="text-center">Базы данных флагов мира</h1>
+<div id="container">
+    <ul class="list-group" id="listOfFlags">
+    </ul>
+</div>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCwQxaRrdIP3Y47i-JSNEL9cjbwYOGn6NQ",
+        authDomain: "word-s-flags.firebaseapp.com",
+        databaseURL: "https://word-s-flags-default-rtdb.firebaseio.com",
+        projectId: "word-s-flags",
+        storageBucket: "word-s-flags.appspot.com",
+        messagingSenderId: "425684393803",
+        appId: "1:425684393803:web:66ca6616d34e12d3f752ce"
+    };
+
+    // Initialize Firebase
+    var app = firebase.initializeApp(firebaseConfig)
+    var db = firebase.firestore();
+    var renderView = ''
+    db.collection("countries").orderBy("name", "asc").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            const dataFromDateBase = doc.data()
+            console.log(dataFromDateBase)
+            renderView += `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="country-name">
+                    ${dataFromDateBase.name}
+                </span>
+                <img class="country-flag" src="1x1/${dataFromDateBase.code}.svg" alt="${dataFromDateBase.name}">
+            </li>
+            `
+        });
+        document.querySelector('#listOfFlags').insertAdjacentHTML('beforeend',renderView)
+    });
+
+
+
+</script>
+<script>
+
+</script>
+</body>
+</html>
